@@ -2,25 +2,25 @@ package ru.doneathome.Model;
 
 public class Car {
 
-    private Long carId;
+    private int id;
     private String model;
     private String vendor;
 
     public Car() {
     }
 
-    public Car(Long carId, String model, String vendor) {
-        this.carId = carId;
+    public Car(int id, String model, String vendor) {
+        this.id = id;
         this.model = model;
         this.vendor = vendor;
     }
 
-    public Long getCarId() {
-        return carId;
+    public int getId() {
+        return id;
     }
 
-    public void setCarId(Long carId) {
-        this.carId = carId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getModel() {
