@@ -17,7 +17,23 @@ public class CarService {
         carDAO.addCar(car);
     }
 
+    public void updateCar(Car car) {
+        carDAO.updateCar(car);
+    }
+
     public List<Car> getAllCars() {
         return carDAO.getAllCars();
+    }
+
+    public Car getCar(Long id) {
+        return carDAO.getCar(id);
+    }
+
+    public void deleteCar(Long id) {
+        carDAO.deleteCar(id);
+    }
+
+    public void deleteAllCars() {
+        carDAO.deleteAllCars();
     }
 }
