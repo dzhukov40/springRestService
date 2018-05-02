@@ -18,7 +18,13 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
-
+/**
+ * # H2
+ *   - у нас эта база конфигурится поумолчанию так как мы добавили эту зависимость
+ *     и у нас есть [application.properties] там устанавливаем параметры для H2
+ *   - у нас есть два файлика для создания схемы БД и первоначальных данных, это
+ *     файлы в ресурсах: [data.sql] и [schema.sql]
+ */
 @SpringBootApplication
 @SpringBootConfiguration
 public class Application {
@@ -27,6 +33,11 @@ public class Application {
         SpringApplication.run(Application.class, args);
     }
 
+    /**
+     * в этот бин при создании прокидываются
+     * параметры с префиксом [spring.datasource] из
+     * [application.properties]
+     */
     @Bean
     @ConfigurationProperties("spring.datasource")
     public DataSource dataSourceH2() {
@@ -38,6 +49,5 @@ public class Application {
     public JdbcTemplate jdbcTemplateH2(@Qualifier("dataSourceH2") DataSource dataSource) {
         return new JdbcTemplate(dataSource);
     }
-
 
 }
