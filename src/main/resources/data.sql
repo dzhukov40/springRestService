@@ -5,7 +5,7 @@ insert into student
 values(10002,'Ravi', 'A1234568');
 
 insert into car
-values(10,'Ravi', 'A1234568');
+values(10,'Ravi', 'A1234568', 13);
 
 insert into car
-values(11,'Raviewd', 'wdfe68');
+values(11,'Raviewd', 'wdfe68', 10);

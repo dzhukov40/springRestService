@@ -103,3 +103,10 @@ public class CarMapper implements RowMapper<Car> {
 - **часть 4: хакатон**
 - сохранили ссылку на хакатон "https://docs.google.com/spreadsheets/d/1hg0pTWDfZ8AYc2HLC9wK30QC1i7VmbLPqInOeVDuMvk/edit#gid=0"
 - сделаем ф-ионал описанный в задании + его расширим
+
+- **часть 2: как скачать и запустить этот проект**
+- качаем "git clone https://github.com/dzhukov40/springRestService.git"
+- собираем "gradle build"
+- запускаем ""
+- подключаемся к базе "http://localhost:8080/h2-console"
+- запуск "chmod +x ./build/libs/gs-rest-service-0.1.0.jar && java -jar ./build/libs/gs-rest-service-0.1.0.jar"
