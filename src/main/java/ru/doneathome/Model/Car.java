@@ -40,4 +40,11 @@ public class Car {
         this.vendor = vendor;
     }
 
+    public int getHorsepower() {
+        return horsepower;
+    }
+
+    public void setHorsepower(int horsepower) {
+        this.horsepower = horsepower;
+    }
 }

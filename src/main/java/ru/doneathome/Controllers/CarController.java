@@ -35,7 +35,7 @@ public class CarController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public Car getCar(@RequestParam Long id) {
+    public Car getCar(@PathVariable Long id) {
         return carFacade.getCar(id);
     }
 
@@ -45,7 +45,7 @@ public class CarController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public void deleteCar(@RequestParam Long id) {
+    public void deleteCar(@PathVariable Long id) {
         carFacade.deleteCar(id);
     }
 

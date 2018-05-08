@@ -13,7 +13,7 @@ import java.util.List;
 @Repository
 public class CarDAO {
 
-   final String ADD_CAR="INSERT INTO CAR(column1) VALUES(?)";
+   final String ADD_CAR="INSERT INTO CAR(id, model, vendor, horsepower) VALUES(?,?,?,?)";
    final String GET_ALL_CARS="SELECT * FROM CAR";
    final String GET_CAR="SELECT * FROM CAR WHERE id = ?";
    final String DELETE_CAR="DELETE FROM CAR WHERE id = ?";
@@ -24,7 +24,8 @@ public class CarDAO {
    private JdbcTemplate jdbcTemplate;
 
    public void addCar(Car car) {
-      jdbcTemplate.update(ADD_CAR, car);
+      Object args[] = new Object[]{car.getId(), car.getModel(), car.getVendor(), car.getHorsepower()};
+      jdbcTemplate.update(ADD_CAR, args);
    }
 
    public List<Car> getAllCars() {
@@ -36,11 +37,11 @@ public class CarDAO {
    }
 
    public Car getCar(Long id) {
-      return jdbcTemplate.query(GET_CAR, new Object[] { id }, new CarMapper()).get(0);
+      return jdbcTemplate.query(GET_CAR, new Object[] { id }, new CarMapper()).stream().findFirst().get();
    }
 
    public void deleteCar(Long id) {
-      jdbcTemplate.query(DELETE_CAR, new Object[] { id }, new CarMapper());
+      jdbcTemplate.update(DELETE_CAR, id);
    }
 
    public void deleteAllCars() {
