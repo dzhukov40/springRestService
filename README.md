@@ -163,7 +163,9 @@ public class CarMapper implements RowMapper<Car> {
             - убиваем [ if pgrep gs-rest-service-0.1.0.jar; then pkill gs-rest-service-0.1.0.jar; fi ]
             - копируем [ yes | cp -rf '/home/proxy40/.jenkins/workspace/springRestService/build/libs/gs-rest-service-0.1.0.jar' '/home/proxy40/My/app' ]
             - делаем исполняемым [ chmod +x '/home/proxy40/My/app/gs-rest-service-0.1.0.jar' ]
-            - запускаем и отпускаем [ nohup java -jar '/home/proxy40/My/app/gs-rest-service-0.1.0.jar' --server.port=8090 & ]
+            - запускаем и отпускаем
+              - (*) надо указать не убивать процесс [BUILD_ID=do_not_kill_me]
+              - наш запуск [ BUILD_ID=do_not_kill_me java -jar '/home/proxy40/My/app/gs-rest-service-0.1.0.jar' --server.port=8090 & ]
           - [!] полный текст команды состоит из этих команд записанных с новой строчки   
       - СОХРАНИТЬ
 
