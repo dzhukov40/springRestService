@@ -1,6 +1,8 @@
 package ru.doneathome.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.doneathome.Model.Car;
 import ru.doneathome.facade.CarFacade;
@@ -19,9 +21,11 @@ public class CarController {
     CarValidator carValidator;
 
     @RequestMapping(method = RequestMethod.POST)
-    public void addCar(@RequestBody Car car) {
+    public ResponseEntity<?> addCar(@RequestBody Car car) {
         carValidator.validate(car);
         carFacade.addCar(car);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.PUT)

@@ -7,8 +7,8 @@
 - клонируем проект: "git clone https://github.com/spring-guides/gs-rest-service.git"
 - открываем проект в "IDEA" (*) ВАЖНО выбрать либо "build.gradle" или "pom.xml"
 - сбилдив проект, сделать исполняемым файл "\*.jar" и запускаем "java -jar ./\*.jar"
-можно так " chmod +x ./build/libs/gs-rest-service-0.1.0.jar && java -jar ./build/libs/gs-rest-service-0.1.0.jar "
-- проверяем ответ на запросс "GET" -> "http://localhost:8080/greeting"
+можно так " chmod +x ./build/libs/gs-rest-service-0.1.0.jar && java -jar ./build/libs/gs-rest-service-0.1.0.jar --server.port=8090 "
+- проверяем ответ на запросс "GET" -> "http://localhost:8090/greeting"
 - **часть 2: архитектура**
 - "контроллеры" тут мапинг запросов на методы и вызов методов фасадов
 - "фасады" тут обьединяется вызов методов различных сервисов
@@ -103,10 +103,72 @@ public class CarMapper implements RowMapper<Car> {
 - **часть 4: хакатон**
 - сохранили ссылку на хакатон "https://docs.google.com/spreadsheets/d/1hg0pTWDfZ8AYc2HLC9wK30QC1i7VmbLPqInOeVDuMvk/edit#gid=0"
 - сделаем ф-ионал описанный в задании + его расширим
-
-- **часть 2: как скачать и запустить этот проект**
+- ! доделать ф-ионал
+- **часть 5: как скачать и запустить этот проект**
 - качаем "git clone https://github.com/dzhukov40/springRestService.git"
 - собираем "gradle build"
 - запускаем ""
 - подключаемся к базе "http://localhost:8080/h2-console"
-- запуск "chmod +x ./build/libs/gs-rest-service-0.1.0.jar && java -jar ./build/libs/gs-rest-service-0.1.0.jar"
+- запуск "chmod +x ./build/libs/gs-rest-service-0.1.0.jar && java -jar ./build/libs/gs-rest-service-0.1.0.jar "
+- **часть 6: разбираемся с Jenkins, настраиваем CI "непрерывная интеграция"**
+- устанавливаем "JENKINS"
+```
+1)смотрим как установить на [linux] 
+  - [https://jenkins.io/doc/pipeline/tour/getting-started/]
+  - качаем: [ wget -q mirrors.jenkins.io/war-stable/latest/jenkins.war ]
+  - запускаем: [ java -jar jenkins.war --httpPort=8080 ]
+    - надо установить [java]
+    - установим оракловую:
+    - [ sudo add-apt-repository ppa:webupd8team/java && sudo apt update ]
+    - [ sudo apt install oracle-java8-installer ]
+    - [ java -version ]
+```    
+- разбираемся как все тут настроить то:
+```
+2) стучимся и поехали
+  - указываем ключ, который генериться на сервере, 
+    на котором запущен [jenkins] -> [ cat /home/proxy40/.jenkins/secrets/initialAdminPassword ] 
+  - Чтобы начать установку стандартного набора плагинов, нажмите Install suggested plugins.
+  - Create First Admin User
+    - Username: dzhukov
+    - Password: 1111
+    - Confirm Password: 1111
+    - Full name: dzhukov   
+    - E-mail address: dscjncrbq@mail.ru
+  -...
+  - рестартуем [jenkins]
+  - заходим как пользователь [ dzhukov/1111 ]
+ 
+3) пробуем создать задание 
+  - new item
+  - Enter an item name: [springRestService]
+  - выбираем [Freestyle project]
+  - [Source Code Management]
+    - выбираем [Git]
+    - указываем репозиторий [https://github.com/dzhukov40/springRestService]
+    - [!] будет ошибка, указываем пользователя и пароль 
+      - [ dzhukov40/D....... ]
+    - не помогло, так как не установлен [git]
+      - [ sudo apt install git -y ]
+      - (*) обновили страничку, все прокатило !
+    - теперь идем в [Build]
+      - добавляем шаг сборки [ Add build step ]
+        - [ Invoke Gradle Script ]
+        - [ Use Gradlew Wrapper ] (*) Make gradle executable
+        - [ Tasks ] -> [ clean build ]
+        - (*) Результат сборки будет сохраняться в папке /var/lib/jenkins/workspace/Lolipop/target/, где Lolipop — название нашего проекта
+      - добавляем шаг для запуска [ Add build step ] 
+        - (*) запустить "shell" скриптик [ Execute shell ]   
+          - забираем на части скриптик:
+            - убиваем [ if pgrep gs-rest-service-0.1.0.jar; then pkill gs-rest-service-0.1.0.jar; fi ]
+            - копируем [ yes | cp -rf '/home/proxy40/.jenkins/workspace/springRestService/build/libs/gs-rest-service-0.1.0.jar' '/home/proxy40/My/app' ]
+            - делаем исполняемым [ chmod +x '/home/proxy40/My/app/gs-rest-service-0.1.0.jar' ]
+            - запускаем и отпускаем [ nohup java -jar '/home/proxy40/My/app/gs-rest-service-0.1.0.jar' --server.port=8090 & ]
+          - [!] полный текст команды состоит из этих команд записанных с новой строчки   
+      - СОХРАНИТЬ
+
+4) настроили теперь смотрим
+  - [ Build Now ] смотрим тут сборки
+```
+    
+ 
